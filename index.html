@@ -1,0 +1,272 @@
+---
+---
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ site.title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+</head>
+<body>
+
+{% assign c = site.data.content %}
+
+<!-- ХЕДЕР (поверх Hero, прозрачный) -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="#hero" class="site-header__brand">{{ c.brand }}</a>
+    <nav class="site-header__nav">
+      <a href="#about">Обо мне</a>
+      <a href="#work">С чем я работаю</a>
+      <a href="#therapy">Как проходит терапия</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+  </div>
+</header>
+
+<!-- БЛОК 1 — HERO -->
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    {% if c.hero.photo and c.hero.photo != "" %}
+    <img class="hero__photo" src="{{ c.hero.photo | relative_url }}" alt="" />
+    {% else %}
+    <div class="hero__placeholder">
+      <span class="hero__placeholder-label">Место под фото</span>
+    </div>
+    {% endif %}
+  </div>
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <h1 class="hero__headline">{{ c.hero.headline | newline_to_br }}</h1>
+    <p class="hero__lede">{{ c.hero.lede }}</p>
+    <a href="#therapy" class="hero__btn">{{ c.hero.button }}</a>
+  </div>
+</section>
+
+<!-- БЛОК 2 — BRIDGE -->
+<section class="bridge" id="corridors">
+  <div class="bridge__inner">
+    <p class="bridge__eyebrow">
+      <span class="bridge__eyebrow-num">02</span>
+      <span class="bridge__eyebrow-divider">/</span>
+      <span class="bridge__eyebrow-text">{{ c.bridge.eyebrow }}</span>
+    </p>
+
+    <h2 class="bridge__headline">{{ c.bridge.headline | newline_to_br }}</h2>
+
+    <div class="bridge__grid">
+      {% for item in c.bridge.items %}
+      <article class="bridge__col">
+        <span class="bridge__col-num">{{ forloop.index | prepend: '0' }}</span>
+        <h3 class="bridge__col-title">{{ item.title }}</h3>
+        <p class="bridge__col-text">{{ item.text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+
+    <hr class="bridge__rule" />
+    <p class="bridge__closing">{{ c.bridge.closing }}</p>
+  </div>
+</section>
+
+<!-- БЛОК 3 — С ЧЕМ Я РАБОТАЮ -->
+<section class="specialties" id="work">
+  <div class="specialties__inner">
+
+    <h2 class="specialties__headline">{{ c.specialties.headline }}</h2>
+
+    <p class="specialties__lede">{{ c.specialties.lede }}</p>
+
+    <div class="specialties__grid">
+      {% for item in c.specialties.items %}
+      <article class="specialty{% if forloop.index > 3 %} specialty--wide{% endif %}">
+        <span class="specialty__num">{{ forloop.index | prepend: '0' }}</span>
+        <h3 class="specialty__title">{{ item.title }}</h3>
+        <p class="specialty__text">{{ item.text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<!-- БЛОК 4 — ОБО МНЕ -->
+<section class="section section--light" id="about">
+  <div class="container">
+    <div class="about__grid">
+      <div class="about__image">
+        <div class="about__photo">
+          {% if c.about.photo and c.about.photo != "" %}
+          <img src="{{ c.about.photo | relative_url }}" alt="{{ c.about.title }}" />
+          {% endif %}
+        </div>
+      </div>
+      <div class="about__text">
+        <p class="eyebrow">{{ c.about.eyebrow }}</p>
+        <h2 class="section__title">{{ c.about.title }}</h2>
+        <p class="lead">{{ c.about.lead }}</p>
+        {% for p in c.about.paragraphs %}
+        <p>{{ p.text }}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- БЛОК 5A — ГАРАНТИИ (обещания) -->
+<section class="promises" id="promises">
+  <div class="promises__inner">
+    <h2 class="promises__headline">{{ c.promises.headline | newline_to_br }}</h2>
+
+    <p class="promises__lede">{{ c.promises.lede | newline_to_br }}</p>
+
+    <div class="promises__grid">
+      {% for item in c.promises.items %}
+      <article class="promise{% if forloop.index > 3 %} promise--wide{% endif %}">
+        <span class="promise__num">{{ forloop.index | prepend: '0' }}</span>
+        <h3 class="promise__q">{{ item.q }}</h3>
+        <p class="promise__a">{{ item.a }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- БЛОК 5B — ОБРАЗОВАНИЕ И ПОДГОТОВКА -->
+<section class="refv-section refv-section--plum" id="trust">
+  <div class="refv-container">
+    <h2 class="refv-section__title refv-section__title--center refv-reveal">{{ c.education.title }}</h2>
+    <p class="refv-section__lede refv-reveal">{{ c.education.lede }}</p>
+    {% if c.education.extra and c.education.extra != "" %}
+    <p class="refv-section__lede refv-reveal">{{ c.education.extra }}</p>
+    {% endif %}
+
+    <div class="refv-slider-wrap refv-reveal">
+      <button class="refv-slider__arrow refv-slider__arrow--left" id="sliderPrev" aria-label="Назад">‹</button>
+      <div class="refv-slider" id="diplomaSlider">
+        {% for d in c.education.diplomas %}
+        <figure class="refv-slider__card">
+          <img src="{{ d.image | relative_url }}" alt="{{ d.caption }}" />
+          <figcaption>{{ d.caption }}</figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+      <button class="refv-slider__arrow refv-slider__arrow--right" id="sliderNext" aria-label="Вперёд">›</button>
+    </div>
+    <div class="refv-slider__dots" id="sliderDots" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- БЛОК 6 — ФОРМАТ РАБОТЫ -->
+<section class="refv-section refv-section--light" id="therapy">
+  <div class="refv-container">
+    <h2 class="refv-section__title refv-section__title--center refv-reveal">{{ c.pricing.title }}</h2>
+    <div class="refv-price-card refv-reveal">
+      <dl class="refv-price-card__list">
+        {% for row in c.pricing.rows %}
+        <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+        {% endfor %}
+      </dl>
+      <div class="refv-center">
+        <a href="{{ c.booking_url }}" class="refv-btn refv-btn--primary">{{ c.pricing.button }}</a>
+      </div>
+    </div>
+    <p class="refv-price-terms refv-reveal">{{ c.pricing.terms }}</p>
+  </div>
+</section>
+
+<!-- ДЕКОРАТИВНЫЙ РАЗДЕЛИТЕЛЬ -->
+<div class="section-divider" aria-hidden="true"><span class="section-divider__mark"></span></div>
+
+<!-- БЛОК 8 — FAQ -->
+<section class="section section--light" id="faq">
+  <div class="container container--narrow">
+    <p class="eyebrow">{{ c.faq.eyebrow }}</p>
+    <h2 class="section__title">{{ c.faq.title }}</h2>
+
+    <div class="faq">
+      {% for item in c.faq.items %}
+      <details>
+        <summary>{{ item.q }}</summary>
+        <p>{{ item.a }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- БЛОК 9 — ПОЛЕЗНЫЕ МАТЕРИАЛЫ -->
+<section class="section materials-section" id="materials">
+  <div class="container">
+    <h2 class="section__title">{{ c.materials.title }}</h2>
+    <p class="section__lede">{{ c.materials.lede }}</p>
+
+    <div class="materials-grid">
+      {% for card in c.materials.cards %}
+      <a href="{{ card.url }}" class="material-card">
+        <span class="material-card__tag">{{ card.tag }}</span>
+        <h3>{{ card.title }}</h3>
+        <p>{{ card.text }}</p>
+        <span class="material-card__cta">{{ card.cta }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- БЛОК 10 — ФИНАЛЬНЫЙ CTA -->
+<section class="section section--cta">
+  <div class="container">
+    {% if c.cta.photo and c.cta.photo != "" %}
+    <div class="cta-media cta-media--filled" aria-hidden="true">
+      <img class="cta-media__photo" src="{{ c.cta.photo | relative_url }}" alt="" />
+    </div>
+    {% else %}
+    <div class="cta-media" aria-hidden="true">
+      <span class="cta-media__num">09</span>
+      <span class="cta-media__tag">Фактура</span>
+      <span class="cta-media__caption">Место под тёплый предметный кадр</span>
+      <span class="cta-media__format">Горизонтальный, 16:9</span>
+    </div>
+    {% endif %}
+    <div class="cta-block">
+      <h2 class="cta__title">{{ c.cta.title }}</h2>
+      <p class="cta__lede">{{ c.cta.lede }}</p>
+      <a href="{{ c.booking_url }}" class="btn-telegram">{{ c.cta.button }}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ФУТЕР -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__brand">{{ c.brand }}</p>
+        <p class="footer__meta">{{ c.footer.meta }}</p>
+      </div>
+      <div>
+        <p class="footer__label">Контакты</p>
+        {% for link in c.footer.contacts %}
+        <p><a href="{{ link.url }}">{{ link.label }}</a></p>
+        {% endfor %}
+      </div>
+      <div>
+        <p class="footer__label">Документы</p>
+        {% for link in c.footer.docs %}
+        <p><a href="{{ link.url }}">{{ link.label }}</a></p>
+        {% endfor %}
+      </div>
+    </div>
+    <p class="footer__copy">{{ c.footer.copyright }}</p>
+  </div>
+</footer>
+
+<script src="{{ '/assets/js/site.js' | relative_url }}"></script>
+
+</body>
+</html>

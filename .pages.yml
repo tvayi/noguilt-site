@@ -1,0 +1,280 @@
+media:
+  input: images
+  output: /images
+
+content:
+  - name: site
+    label: Тексты и картинки сайта
+    type: file
+    path: _data/content.yml
+    fields:
+      - name: brand
+        label: Имя (шапка и футер)
+        type: string
+      - name: booking_url
+        label: Ссылка для записи (Telegram)
+        type: string
+
+      - name: hero
+        label: Главный экран
+        type: object
+        fields:
+          - name: photo
+            label: Фоновое фото
+            type: image
+          - name: headline
+            label: Заголовок
+            type: text
+          - name: lede
+            label: Подзаголовок
+            type: text
+          - name: button
+            label: Текст кнопки
+            type: string
+
+      - name: bridge
+        label: «Возможно, вам знакомо»
+        type: object
+        fields:
+          - name: eyebrow
+            label: Надзаголовок
+            type: string
+          - name: headline
+            label: Заголовок
+            type: text
+          - name: items
+            label: Колонки
+            type: object
+            list: true
+            fields:
+              - name: title
+                label: Заголовок
+                type: string
+              - name: text
+                label: Текст
+                type: text
+          - name: closing
+            label: Финальная фраза
+            type: string
+
+      - name: specialties
+        label: С чем я работаю
+        type: object
+        fields:
+          - name: headline
+            label: Заголовок
+            type: string
+          - name: lede
+            label: Подзаголовок
+            type: text
+          - name: items
+            label: Направления
+            type: object
+            list: true
+            fields:
+              - name: title
+                label: Название
+                type: string
+              - name: text
+                label: Описание
+                type: text
+
+      - name: about
+        label: Обо мне
+        type: object
+        fields:
+          - name: eyebrow
+            label: Надзаголовок
+            type: string
+          - name: title
+            label: Заголовок
+            type: string
+          - name: photo
+            label: Фото
+            type: image
+          - name: lead
+            label: Первый абзац (крупный)
+            type: text
+          - name: paragraphs
+            label: Абзацы
+            type: object
+            list: true
+            fields:
+              - name: text
+                label: Текст
+                type: text
+
+      - name: promises
+        label: Гарантии
+        type: object
+        fields:
+          - name: headline
+            label: Заголовок
+            type: text
+          - name: lede
+            label: Подзаголовок
+            type: text
+          - name: items
+            label: Карточки
+            type: object
+            list: true
+            fields:
+              - name: q
+                label: Вопрос
+                type: string
+              - name: a
+                label: Ответ
+                type: text
+
+      - name: education
+        label: Образование и подготовка
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: string
+          - name: lede
+            label: Текст
+            type: text
+          - name: extra
+            label: Дополнительный текст (об образовании)
+            type: text
+          - name: diplomas
+            label: Дипломы
+            type: object
+            list: true
+            fields:
+              - name: image
+                label: Скан диплома
+                type: image
+              - name: caption
+                label: Подпись
+                type: string
+
+      - name: pricing
+        label: Формат работы
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: string
+          - name: rows
+            label: Строки карточки
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Название
+                type: string
+              - name: value
+                label: Значение
+                type: string
+          - name: button
+            label: Текст кнопки
+            type: string
+          - name: terms
+            label: Условия (мелкий текст)
+            type: text
+
+      - name: faq
+        label: Частые вопросы
+        type: object
+        fields:
+          - name: eyebrow
+            label: Надзаголовок
+            type: string
+          - name: title
+            label: Заголовок
+            type: string
+          - name: items
+            label: Вопросы
+            type: object
+            list: true
+            fields:
+              - name: q
+                label: Вопрос
+                type: string
+              - name: a
+                label: Ответ
+                type: text
+
+      - name: materials
+        label: Полезные материалы
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: string
+          - name: lede
+            label: Подзаголовок
+            type: text
+          - name: cards
+            label: Карточки
+            type: object
+            list: true
+            fields:
+              - name: tag
+                label: Метка
+                type: string
+              - name: title
+                label: Заголовок
+                type: string
+              - name: text
+                label: Текст
+                type: text
+              - name: cta
+                label: Текст ссылки
+                type: string
+              - name: url
+                label: Ссылка
+                type: string
+
+      - name: cta
+        label: Финальный призыв
+        type: object
+        fields:
+          - name: photo
+            label: Фото (горизонтальное, 16:9)
+            type: image
+          - name: title
+            label: Заголовок
+            type: string
+          - name: lede
+            label: Подзаголовок
+            type: text
+          - name: button
+            label: Текст кнопки
+            type: string
+
+      - name: footer
+        label: Футер
+        type: object
+        fields:
+          - name: meta
+            label: Подпись под именем
+            type: string
+          - name: contacts
+            label: Контакты
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Название
+                type: string
+              - name: url
+                label: Ссылка
+                type: string
+          - name: docs
+            label: Документы
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Название
+                type: string
+              - name: url
+                label: Ссылка
+                type: string
+          - name: copyright
+            label: Копирайт
+            type: string
