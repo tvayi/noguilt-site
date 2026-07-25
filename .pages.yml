@@ -15,6 +15,17 @@ content:
         label: Ссылка для записи (Telegram)
         type: string
 
+      - name: seo
+        label: SEO (поисковики и превью ссылок)
+        type: object
+        fields:
+          - name: description
+            label: Описание сайта (текст сниппета в Google/Яндексе, до 160 символов)
+            type: text
+          - name: og_image
+            label: Картинка для превью ссылки (Telegram/WhatsApp, 1200×630)
+            type: image
+
       - name: hero
         label: Главный экран
         type: object
