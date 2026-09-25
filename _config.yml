@@ -1,7 +1,7 @@
 title: Екатерина Игумнова — психолог, КПТ
 lang: ru
-baseurl: /noguilt-site
-url: https://tvayi.github.io
+baseurl: ""
+url: https://katherinepsy.com
 exclude:
   - README.md
   - .pages.yml

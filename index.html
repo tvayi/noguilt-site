@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": {{ c.brand | jsonify }},
-  "jobTitle": "Клинический психолог",
+  "jobTitle": "Психолог",
   "description": {{ c.seo.description | jsonify }},
   "url": {{ '/' | absolute_url | jsonify }},
   "knowsAbout": [{% for item in c.specialties.items %}{{ item.title | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
@@ -60,180 +60,176 @@
 </head>
 <body>
 
-
-<!-- ХЕДЕР (поверх Hero, прозрачный) -->
-<header class="site-header">
-  <div class="site-header__inner">
-    <a href="#hero" class="site-header__brand">{{ c.brand }}</a>
-    <nav class="site-header__nav">
+<!-- БЛОК 1 — HERO (хедер внутри тёмно-зелёного экрана) -->
+<section class="hero" id="hero">
+  <header class="site-header">
+    <a href="#hero" class="site-header__brand">{{ c.logo }}</a>
+    <nav class="site-header__nav" aria-label="Разделы сайта">
+      <a href="#work">С чем работаю</a>
       <a href="#about">Обо мне</a>
-      <a href="#work">С чем я работаю</a>
-      <a href="#therapy">Как проходит терапия</a>
+      <a href="#process">Как проходят встречи</a>
       <a href="#faq">Вопросы</a>
     </nav>
-  </div>
-</header>
+    <p class="site-header__meta">{{ c.header.meta }}</p>
+  </header>
 
-<!-- БЛОК 1 — HERO -->
-<section class="hero" id="hero">
-  <div class="hero__bg">
-    {% if c.hero.photo and c.hero.photo != "" %}
-    <img class="hero__photo" src="{{ c.hero.photo | relative_url }}" alt="" />
-    {% else %}
-    <div class="hero__placeholder">
-      <span class="hero__placeholder-label">Место под фото</span>
+  <div class="hero__grid">
+    <div class="hero__content">
+      <h1 class="hero__headline">{{ c.hero.headline | newline_to_br }}</h1>
+      <p class="hero__lede">{{ c.hero.lede }}</p>
+      <p class="hero__lede">{{ c.hero.approach }}</p>
+      <a href="{{ c.booking_url }}" class="btn btn--light">{{ c.hero.button }}</a>
+      <a href="#situations" class="hero__more">{{ c.hero.more }} <span aria-hidden="true">↓</span></a>
+      <p class="hero__note">{{ c.hero.note }}</p>
     </div>
-    {% endif %}
-  </div>
-  <div class="hero__overlay"></div>
-  <div class="hero__content">
-    <h1 class="hero__headline">{{ c.hero.headline | newline_to_br }}</h1>
-    <p class="hero__lede">{{ c.hero.lede }}</p>
-    <a href="#therapy" class="hero__btn">{{ c.hero.button }}</a>
+    <div class="hero__portrait">
+      {% if c.hero.photo and c.hero.photo != "" %}
+      <img src="{{ c.hero.photo | relative_url }}" alt="{{ c.brand }}" />
+      {% else %}
+      <span class="portrait-label">{{ c.hero.photo_label }}</span>
+      {% endif %}
+    </div>
   </div>
 </section>
 
-<!-- БЛОК 2 — BRIDGE -->
-<section class="bridge" id="corridors">
-  <div class="bridge__inner">
-    <p class="bridge__eyebrow">
-      <span class="bridge__eyebrow-num">02</span>
-      <span class="bridge__eyebrow-divider">/</span>
-      <span class="bridge__eyebrow-text">{{ c.bridge.eyebrow }}</span>
+<!-- БЛОК 2 — ВОЗМОЖНО, ВЫ СЕЙЧАС ЗДЕСЬ -->
+<section class="section situations" id="situations">
+  <div class="container">
+    <h2 class="section__title section__title--center">{{ c.situations.headline }}</h2>
+    <div class="situations__grid">
+      {% for item in c.situations.items %}
+      <article class="situation">
+        <span class="num">{{ forloop.index | prepend: '0' }}</span>
+        <h3 class="situation__title">{{ item.title }}</h3>
+        <p class="situation__text">{{ item.text }}</p>
+        <a href="{{ item.url }}" class="situation__link">{{ item.link }} <span aria-hidden="true">→</span></a>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="situations__other">
+      <a href="{{ c.booking_url }}">{{ c.situations.other_link }}</a> {{ c.situations.other_text }}
     </p>
-
-    <h2 class="bridge__headline">{{ c.bridge.headline | newline_to_br }}</h2>
-
-    <div class="bridge__grid">
-      {% for item in c.bridge.items %}
-      <article class="bridge__col">
-        <span class="bridge__col-num">{{ forloop.index | prepend: '0' }}</span>
-        <h3 class="bridge__col-title">{{ item.title }}</h3>
-        <p class="bridge__col-text">{{ item.text }}</p>
-      </article>
-      {% endfor %}
-    </div>
-
-    <hr class="bridge__rule" />
-    <p class="bridge__closing">{{ c.bridge.closing }}</p>
   </div>
 </section>
 
-<!-- БЛОК 3 — С ЧЕМ Я РАБОТАЮ -->
-<section class="specialties" id="work">
-  <div class="specialties__inner">
-
-    <h2 class="specialties__headline">{{ c.specialties.headline }}</h2>
-
-    <p class="specialties__lede">{{ c.specialties.lede }}</p>
-
-    <div class="specialties__grid">
+<!-- БЛОК 3 — С ЧЕМ МОЖНО ПРИЙТИ -->
+<section class="section specialties" id="work">
+  <div class="container">
+    <h2 class="section__title">{{ c.specialties.headline }}</h2>
+    <p class="section__lede">{{ c.specialties.lede }}</p>
+    <ol class="rows">
       {% for item in c.specialties.items %}
-      <article class="specialty{% if forloop.index > 3 %} specialty--wide{% endif %}">
-        <span class="specialty__num">{{ forloop.index | prepend: '0' }}</span>
-        <h3 class="specialty__title">{{ item.title }}</h3>
-        <p class="specialty__text">{{ item.text }}</p>
-      </article>
+      <li class="row" id="work-{{ forloop.index }}">
+        <span class="num">{{ forloop.index | prepend: '0' }}</span>
+        <h3 class="row__title">{{ item.title }}</h3>
+        <p class="row__text">{{ item.text }}</p>
+      </li>
       {% endfor %}
-    </div>
-
+    </ol>
+    <p class="section__note">{{ c.specialties.note }}</p>
   </div>
 </section>
 
 <!-- БЛОК 4 — ОБО МНЕ -->
-<section class="section section--light" id="about">
-  <div class="container">
-    <div class="about__grid">
-      <div class="about__image">
-        <div class="about__photo">
-          {% if c.about.photo and c.about.photo != "" %}
-          <img src="{{ c.about.photo | relative_url }}" alt="{{ c.about.title }}" />
-          {% endif %}
-        </div>
-      </div>
-      <div class="about__text">
-        <p class="eyebrow">{{ c.about.eyebrow }}</p>
-        <h2 class="section__title">{{ c.about.title }}</h2>
-        <p class="lead">{{ c.about.lead }}</p>
-        {% for p in c.about.paragraphs %}
-        <p>{{ p.text }}</p>
-        {% endfor %}
-      </div>
+<section class="section about" id="about">
+  <div class="container about__grid">
+    <div class="about__photo">
+      {% if c.about.photo and c.about.photo != "" %}
+      <img src="{{ c.about.photo | relative_url }}" alt="{{ c.about.subtitle }}" />
+      {% else %}
+      <span class="portrait-label">{{ c.about.photo_label }}</span>
+      {% endif %}
     </div>
-  </div>
-</section>
-
-<!-- БЛОК 5A — ГАРАНТИИ (обещания) -->
-<section class="promises" id="promises">
-  <div class="promises__inner">
-    <h2 class="promises__headline">{{ c.promises.headline | newline_to_br }}</h2>
-
-    <p class="promises__lede">{{ c.promises.lede | newline_to_br }}</p>
-
-    <div class="promises__grid">
-      {% for item in c.promises.items %}
-      <article class="promise{% if forloop.index > 3 %} promise--wide{% endif %}">
-        <span class="promise__num">{{ forloop.index | prepend: '0' }}</span>
-        <h3 class="promise__q">{{ item.q }}</h3>
-        <p class="promise__a">{{ item.a }}</p>
-      </article>
+    <div class="about__text">
+      <h2 class="section__title">{{ c.about.title }}</h2>
+      <p class="about__subtitle">{{ c.about.subtitle }}</p>
+      {% for p in c.about.paragraphs %}
+      <p>{{ p.text }}</p>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- БЛОК 5B — ОБРАЗОВАНИЕ И ПОДГОТОВКА -->
-<section class="refv-section refv-section--plum" id="trust">
-  <div class="refv-container">
-    <h2 class="refv-section__title refv-section__title--center refv-reveal">{{ c.education.title }}</h2>
-    <p class="refv-section__lede refv-reveal">{{ c.education.lede }}</p>
-    {% if c.education.extra and c.education.extra != "" %}
-    <p class="refv-section__lede refv-reveal">{{ c.education.extra }}</p>
-    {% endif %}
-
-    <div class="refv-slider-wrap refv-reveal">
-      <button class="refv-slider__arrow refv-slider__arrow--left" id="sliderPrev" aria-label="Назад">‹</button>
-      <div class="refv-slider" id="diplomaSlider">
-        {% for d in c.education.diplomas %}
-        <figure class="refv-slider__card">
+<!-- БЛОК 5 — НА ЧТО МОЖНО ОПЕРЕТЬСЯ (сливовый) -->
+<section class="section trust" id="trust">
+  <div class="container">
+    <h2 class="section__title section__title--center">{{ c.trust.title }}</h2>
+    <div class="trust__docs">
+      {% for d in c.trust.documents %}
+      <figure class="doc">
+        <p class="doc__title">{{ d.title }}</p>
+        {% if d.image and d.image != "" %}
+        <button class="doc__frame" type="button" data-lightbox="{{ d.image | relative_url }}" data-alt="{{ d.caption }}" aria-label="Открыть: {{ d.caption }}">
           <img src="{{ d.image | relative_url }}" alt="{{ d.caption }}" />
-          <figcaption>{{ d.caption }}</figcaption>
-        </figure>
-        {% endfor %}
-      </div>
-      <button class="refv-slider__arrow refv-slider__arrow--right" id="sliderNext" aria-label="Вперёд">›</button>
+          <span class="doc__zoom" aria-hidden="true"></span>
+        </button>
+        {% else %}
+        <div class="doc__frame doc__frame--empty"><span class="doc__zoom" aria-hidden="true"></span></div>
+        {% endif %}
+        <figcaption>{{ d.caption }}</figcaption>
+      </figure>
+      {% endfor %}
     </div>
-    <div class="refv-slider__dots" id="sliderDots" aria-hidden="true"></div>
+    <div class="trust__principles">
+      {% for p in c.trust.principles %}
+      <div class="principle">
+        <h3 class="principle__title">{{ p.title }}</h3>
+        <p>{{ p.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
-<!-- БЛОК 6 — ФОРМАТ РАБОТЫ -->
-<section class="refv-section refv-section--light" id="therapy">
-  <div class="refv-container">
-    <h2 class="refv-section__title refv-section__title--center refv-reveal">{{ c.pricing.title }}</h2>
-    <div class="refv-price-card refv-reveal">
-      <dl class="refv-price-card__list">
-        {% for row in c.pricing.rows %}
-        <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+<!-- БЛОК 6 — ЧТО БУДЕТ ПОСЛЕ ЗАПИСИ -->
+<section class="section process" id="process">
+  <div class="container">
+    <div class="process__grid">
+      <h2 class="section__title">{{ c.process.headline }}</h2>
+      <ol class="rows rows--compact">
+        {% for s in c.process.steps %}
+        <li class="row">
+          <span class="num">{{ forloop.index | prepend: '0' }}</span>
+          <h3 class="row__title">{{ s.title }}</h3>
+          <p class="row__text">{{ s.text }}</p>
+        </li>
         {% endfor %}
-      </dl>
-      <div class="refv-center">
-        <a href="{{ c.booking_url }}" class="refv-btn refv-btn--primary">{{ c.pricing.button }}</a>
-      </div>
+      </ol>
     </div>
-    <p class="refv-price-terms refv-reveal">{{ c.pricing.terms }}</p>
+    <p class="section__note section__note--ruled">{{ c.process.note }}</p>
   </div>
 </section>
 
-<!-- ДЕКОРАТИВНЫЙ РАЗДЕЛИТЕЛЬ -->
-<div class="section-divider" aria-hidden="true"><span class="section-divider__mark"></span></div>
+<!-- БЛОК 7 — ПЕРВАЯ КОНСУЛЬТАЦИЯ -->
+<section class="pricing" id="pricing">
+  <div class="price-card">
+    <h2 class="price-card__title">{{ c.pricing.title }}</h2>
+    <p class="price-card__price">{{ c.pricing.price }}</p>
+    <p class="price-card__meta">{{ c.pricing.meta }}</p>
+    <div class="price-card__cols">
+      <div>
+        <p>{{ c.pricing.intro }}</p>
+        <ul>
+          {% for pt in c.pricing.points %}
+          <li>{{ pt.text }}</li>
+          {% endfor %}
+        </ul>
+        <p>{{ c.pricing.outro }}</p>
+      </div>
+      <div>
+        {% for t in c.pricing.terms %}
+        <p>{{ t.text }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <a href="{{ c.booking_url }}" class="btn btn--plum">{{ c.pricing.button }}</a>
+  </div>
+</section>
 
 <!-- БЛОК 8 — FAQ -->
-<section class="section section--light" id="faq">
-  <div class="container container--narrow">
-    <p class="eyebrow">{{ c.faq.eyebrow }}</p>
+<section class="section faq-section" id="faq">
+  <div class="container">
     <h2 class="section__title">{{ c.faq.title }}</h2>
-
     <div class="faq">
       {% for item in c.faq.items %}
       <details>
@@ -250,7 +246,6 @@
   <div class="container">
     <h2 class="section__title">{{ c.materials.title }}</h2>
     <p class="section__lede">{{ c.materials.lede }}</p>
-
     <div class="materials-grid">
       {% for card in c.materials.cards %}
       <a href="{{ card.url }}" class="material-card">
@@ -271,18 +266,11 @@
     <div class="cta-media cta-media--filled" aria-hidden="true">
       <img class="cta-media__photo" src="{{ c.cta.photo | relative_url }}" alt="" />
     </div>
-    {% else %}
-    <div class="cta-media" aria-hidden="true">
-      <span class="cta-media__num">09</span>
-      <span class="cta-media__tag">Фактура</span>
-      <span class="cta-media__caption">Место под тёплый предметный кадр</span>
-      <span class="cta-media__format">Горизонтальный, 16:9</span>
-    </div>
     {% endif %}
     <div class="cta-block">
       <h2 class="cta__title">{{ c.cta.title }}</h2>
       <p class="cta__lede">{{ c.cta.lede }}</p>
-      <a href="{{ c.booking_url }}" class="btn-telegram">{{ c.cta.button }}</a>
+      <a href="{{ c.booking_url }}" class="btn btn--sage">{{ c.cta.button }}</a>
     </div>
   </div>
 </section>
@@ -311,6 +299,11 @@
     <p class="footer__copy">{{ c.footer.copyright }}</p>
   </div>
 </footer>
+
+<dialog class="lightbox" id="lightbox" aria-label="Просмотр документа">
+  <button class="lightbox__close" type="button" aria-label="Закрыть">×</button>
+  <img class="lightbox__img" src="" alt="" />
+</dialog>
 
 <script src="{{ '/assets/js/site.js' | relative_url }}"></script>
 

@@ -1,72 +1,24 @@
 (function () {
   'use strict';
 
-  /* Fade-in при скролле — только для эталонных секций (.refv-reveal) */
-  const reveals = document.querySelectorAll('.refv-reveal');
-  if ('IntersectionObserver' in window && reveals.length) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    );
-    reveals.forEach((el) => io.observe(el));
-  } else {
-    reveals.forEach((el) => el.classList.add('is-visible'));
-  }
+  /* Просмотр сканов документов в полном размере */
+  const box = document.getElementById('lightbox');
+  if (!box || typeof box.showModal !== 'function') return;
 
-  /* Слайдер дипломов */
-  const slider = document.getElementById('diplomaSlider');
-  const prevBtn = document.getElementById('sliderPrev');
-  const nextBtn = document.getElementById('sliderNext');
-  const dotsBox = document.getElementById('sliderDots');
+  const img = box.querySelector('.lightbox__img');
 
-  if (slider) {
-    const getStep = () => {
-      const card = slider.querySelector('.refv-slider__card');
-      if (!card) return 280;
-      const gap = parseInt(getComputedStyle(slider).gap || '16', 10);
-      return card.offsetWidth + gap;
-    };
+  document.querySelectorAll('[data-lightbox]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      img.src = btn.dataset.lightbox;
+      img.alt = btn.dataset.alt || '';
+      box.showModal();
+    });
+  });
 
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        slider.scrollBy({ left: -getStep(), behavior: 'smooth' });
-      });
-    }
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        slider.scrollBy({ left: getStep(), behavior: 'smooth' });
-      });
-    }
+  box.querySelector('.lightbox__close').addEventListener('click', () => box.close());
 
-    if (dotsBox) {
-      const cards = slider.querySelectorAll('.refv-slider__card');
-      cards.forEach(() => {
-        dotsBox.appendChild(document.createElement('span'));
-      });
-      const dots = dotsBox.querySelectorAll('span');
-
-      const updateDots = () => {
-        const step = getStep();
-        const idx = Math.round(slider.scrollLeft / step);
-        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
-      };
-      slider.addEventListener('scroll', () => {
-        window.requestAnimationFrame(updateDots);
-      });
-      updateDots();
-
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          slider.scrollTo({ left: i * getStep(), behavior: 'smooth' });
-        });
-      });
-    }
-  }
+  /* Клик по затемнённому фону закрывает окно */
+  box.addEventListener('click', (e) => {
+    if (e.target === box) box.close();
+  });
 })();
