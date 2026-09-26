@@ -241,61 +241,56 @@
   </div>
 </section>
 
-<!-- БЛОК 9 — ПОЛЕЗНЫЕ МАТЕРИАЛЫ -->
-<section class="section materials-section" id="materials">
-  <div class="container">
-    <h2 class="section__title">{{ c.materials.title }}</h2>
-    <p class="section__lede">{{ c.materials.lede }}</p>
-    <div class="materials-grid">
-      {% for card in c.materials.cards %}
-      <a href="{{ card.url }}" class="material-card">
-        <span class="material-card__tag">{{ card.tag }}</span>
-        <h3>{{ card.title }}</h3>
-        <p>{{ card.text }}</p>
-        <span class="material-card__cta">{{ card.cta }}</span>
-      </a>
+<!-- БЛОК 9 — ПРЕДМЕТНЫЙ КАДР (показывается, когда загружено фото) -->
+{% if c.cta.photo and c.cta.photo != "" %}
+<div class="mood">
+  <img class="mood__photo" src="{{ c.cta.photo | relative_url }}" alt="" />
+</div>
+{% endif %}
+
+<!-- БЛОК 10 — ФИНАЛЬНЫЙ ПРИЗЫВ -->
+<section class="final-cta">
+  <h2 class="final-cta__title">{{ c.cta.title | newline_to_br }}</h2>
+  <p class="final-cta__lede">{{ c.cta.lede | newline_to_br }}</p>
+  <p class="final-cta__meta">{{ c.cta.meta }}</p>
+  <a href="{{ c.booking_url }}" class="btn btn--light">{{ c.cta.button }}</a>
+  <p class="final-cta__hint">{{ c.cta.hint | newline_to_br }}</p>
+</section>
+
+<!-- БЛОК 11 — ПОКА МОЖНО ПРОСТО ПОЧИТАТЬ + ФУТЕР -->
+<section class="reading" id="reading">
+  <div class="container reading__grid">
+    <h2 class="section__title">{{ c.reading.title | newline_to_br }}</h2>
+    <div class="reading__body">
+      <h3 class="reading__subtitle">{{ c.reading.subtitle }}</h3>
+      {% for p in c.reading.paragraphs %}
+      <p>{{ p.text }}</p>
       {% endfor %}
+      <a href="{{ c.reading.url }}" class="reading__link">{{ c.reading.link }} <span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 
-<!-- БЛОК 10 — ФИНАЛЬНЫЙ CTA -->
-<section class="section section--cta">
-  <div class="container">
-    {% if c.cta.photo and c.cta.photo != "" %}
-    <div class="cta-media cta-media--filled" aria-hidden="true">
-      <img class="cta-media__photo" src="{{ c.cta.photo | relative_url }}" alt="" />
-    </div>
-    {% endif %}
-    <div class="cta-block">
-      <h2 class="cta__title">{{ c.cta.title }}</h2>
-      <p class="cta__lede">{{ c.cta.lede }}</p>
-      <a href="{{ c.booking_url }}" class="btn btn--sage">{{ c.cta.button }}</a>
-    </div>
-  </div>
-</section>
-
-<!-- ФУТЕР -->
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
-      <div>
-        <p class="footer__brand">{{ c.brand }}</p>
-        <p class="footer__meta">{{ c.footer.meta }}</p>
-      </div>
-      <div>
-        <p class="footer__label">Контакты</p>
-        {% for link in c.footer.contacts %}
-        <p><a href="{{ link.url }}">{{ link.label }}</a></p>
+      <div class="footer__col">
+        <p class="footer__name">{{ c.footer.name }}</p>
+        {% for line in c.footer.lines %}
+        <p>{{ line.text }}</p>
         {% endfor %}
+        <p>{% for link in c.footer.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% unless forloop.last %} <span class="footer__dot">·</span> {% endunless %}{% endfor %}</p>
       </div>
-      <div>
-        <p class="footer__label">Документы</p>
+      <div class="footer__col">
         {% for link in c.footer.docs %}
         <p><a href="{{ link.url }}">{{ link.label }}</a></p>
         {% endfor %}
+        {% if c.footer.legal and c.footer.legal != "" %}
+        <p class="footer__legal">{{ c.footer.legal }}</p>
+        {% endif %}
       </div>
     </div>
+    <p class="footer__disclaimer">{{ c.footer.disclaimer }}</p>
     <p class="footer__copy">{{ c.footer.copyright }}</p>
   </div>
 </footer>

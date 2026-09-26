@@ -260,63 +260,71 @@ content:
                 label: Ответ
                 type: text
 
-      - name: materials
-        label: Полезные материалы
-        type: object
-        fields:
-          - name: title
-            label: Заголовок
-            type: string
-          - name: lede
-            label: Подзаголовок
-            type: text
-          - name: cards
-            label: Карточки
-            type: object
-            list: true
-            fields:
-              - name: tag
-                label: Метка
-                type: string
-              - name: title
-                label: Заголовок
-                type: string
-              - name: text
-                label: Текст
-                type: text
-              - name: cta
-                label: Текст ссылки
-                type: string
-              - name: url
-                label: Ссылка
-                type: string
-
       - name: cta
         label: Финальный призыв
         type: object
         fields:
           - name: photo
-            label: Фото (горизонтальное, 16:9)
+            label: Предметное фото над блоком (горизонтальное, 16:9; пусто — блока нет)
             type: image
           - name: title
             label: Заголовок
-            type: string
+            type: text
           - name: lede
             label: Подзаголовок
             type: text
+          - name: meta
+            label: Строка с форматом и ценой
+            type: string
           - name: button
             label: Текст кнопки
+            type: string
+          - name: hint
+            label: Подсказка под кнопкой
+            type: text
+
+      - name: reading
+        label: Пока можно просто почитать
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: text
+          - name: subtitle
+            label: Подзаголовок справа
+            type: string
+          - name: paragraphs
+            label: Абзацы
+            type: object
+            list: true
+            fields:
+              - name: text
+                label: Текст
+                type: text
+          - name: link
+            label: Текст ссылки
+            type: string
+          - name: url
+            label: Ссылка
             type: string
 
       - name: footer
         label: Футер
         type: object
         fields:
-          - name: meta
-            label: Подпись под именем
+          - name: name
+            label: Имя
             type: string
-          - name: contacts
-            label: Контакты
+          - name: lines
+            label: Строки под именем
+            type: object
+            list: true
+            fields:
+              - name: text
+                label: Текст
+                type: string
+          - name: links
+            label: Ссылки под именем
             type: object
             list: true
             fields:
@@ -337,6 +345,12 @@ content:
               - name: url
                 label: Ссылка
                 type: string
+          - name: legal
+            label: Юридический статус и ИНН (пусто — строка скрыта)
+            type: string
+          - name: disclaimer
+            label: Дисклеймер
+            type: text
           - name: copyright
             label: Копирайт
             type: string
