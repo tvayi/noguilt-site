@@ -9,13 +9,13 @@ content:
     path: _data/content.yml
     fields:
       - name: brand
-        label: Имя (футер, SEO)
-        type: string
-      - name: logo
-        label: Логотип в шапке
+        label: Имя (шапка, SEO)
         type: string
       - name: booking_url
-        label: Ссылка для записи (Telegram)
+        label: Ссылка на Telegram (запасная для кнопок записи и «напишите напрямую»)
+        type: string
+      - name: cal_link
+        label: Запись в cal.com — часть ссылки после app.cal.com/ (пусто — кнопки ведут в Telegram)
         type: string
 
       - name: seo
@@ -29,12 +29,16 @@ content:
             label: Картинка для превью ссылки (Telegram/WhatsApp, 1200×630)
             type: image
 
-      - name: header
-        label: Шапка
+      - name: nav
+        label: Меню в шапке
         type: object
+        list: true
         fields:
-          - name: meta
-            label: Подпись справа
+          - name: label
+            label: Название
+            type: string
+          - name: url
+            label: Ссылка (#work, #about, #first-session, #faq …)
             type: string
 
       - name: hero
@@ -42,32 +46,20 @@ content:
         type: object
         fields:
           - name: photo
-            label: Портрет (вертикальный)
+            label: Портрет
             type: image
-          - name: photo_label
-            label: Подпись заглушки, пока нет фото
-            type: string
           - name: headline
             label: Заголовок
-            type: text
+            type: string
           - name: lede
-            label: Первый абзац
-            type: text
-          - name: approach
-            label: Второй абзац (подходы, формат)
+            label: Текст
             type: text
           - name: button
             label: Текст кнопки
             type: string
-          - name: more
-            label: Ссылка «узнать больше»
-            type: string
-          - name: note
-            label: Мелкая подпись внизу
-            type: string
 
       - name: situations
-        label: «Возможно, вы сейчас здесь»
+        label: «Возможно, вы узнаете себя?»
         type: object
         fields:
           - name: headline
@@ -84,29 +76,20 @@ content:
               - name: text
                 label: Текст
                 type: text
-              - name: link
-                label: Текст ссылки
-                type: string
-              - name: url
-                label: Ссылка (#work-1 … #work-5 — строки блока «С чем можно прийти»)
-                type: string
           - name: other_link
-            label: Подчёркнутая часть нижней строки
+            label: Подчёркнутая часть нижней строки (ведёт в Telegram)
             type: string
           - name: other_text
             label: Остальной текст нижней строки
             type: text
 
       - name: specialties
-        label: С чем можно прийти
+        label: С чем ещё можно прийти
         type: object
         fields:
           - name: headline
             label: Заголовок
             type: string
-          - name: lede
-            label: Подзаголовок
-            type: text
           - name: items
             label: Строки
             type: object
@@ -118,25 +101,13 @@ content:
               - name: text
                 label: Описание
                 type: text
-          - name: note
-            label: Подпись под списком
-            type: text
 
-      - name: about
-        label: Обо мне
+      - name: stakes
+        label: «Это не пройдёт само»
         type: object
         fields:
           - name: title
             label: Заголовок
-            type: string
-          - name: subtitle
-            label: Подзаголовок (имя)
-            type: string
-          - name: photo
-            label: Фото
-            type: image
-          - name: photo_label
-            label: Подпись заглушки, пока нет фото
             type: string
           - name: paragraphs
             label: Абзацы
@@ -147,47 +118,33 @@ content:
                 label: Текст
                 type: text
 
-      - name: trust
-        label: На что можно опереться
+      - name: about
+        label: Обо мне
         type: object
         fields:
           - name: title
             label: Заголовок
             type: string
-          - name: documents
-            label: Документы
+          - name: photo
+            label: Фото
+            type: image
+          - name: paragraphs
+            label: Абзацы
             type: object
             list: true
             fields:
-              - name: title
-                label: Заголовок над сканом
-                type: string
-              - name: image
-                label: Скан
-                type: image
-              - name: caption
-                label: Подпись под сканом
-                type: string
-          - name: principles
-            label: Принципы
-            type: object
-            list: true
-            fields:
-              - name: title
-                label: Заголовок
-                type: string
               - name: text
                 label: Текст
                 type: text
 
-      - name: process
-        label: Что будет после записи
+      - name: steps
+        label: Три шага
         type: object
         fields:
-          - name: headline
+          - name: title
             label: Заголовок
             type: string
-          - name: steps
+          - name: items
             label: Шаги
             type: object
             list: true
@@ -198,48 +155,116 @@ content:
               - name: text
                 label: Описание
                 type: text
-          - name: note
-            label: Подпись под шагами
-            type: text
 
-      - name: pricing
+      - name: first_session
         label: Первая консультация
         type: object
         fields:
           - name: title
             label: Заголовок
-            type: string
-          - name: price
-            label: Цена
-            type: string
-          - name: meta
-            label: Строка под ценой
-            type: string
-          - name: intro
-            label: Левая колонка — вступление
             type: text
+          - name: subtitle
+            label: Подзаголовок над списком
+            type: string
           - name: points
-            label: Левая колонка — пункты
+            label: Пункты
             type: object
             list: true
             fields:
               - name: text
                 label: Текст
                 type: string
-          - name: outro
-            label: Левая колонка — вывод
+          - name: button
+            label: Текст кнопки
+            type: string
+
+      - name: results
+        label: «Как это — когда внутри становится иначе»
+        type: object
+        fields:
+          - name: title
+            label: Заголовок (перенос строки сохраняется)
             type: text
-          - name: terms
-            label: Правая колонка — условия
+          - name: points
+            label: Пункты
             type: object
             list: true
             fields:
               - name: text
-                label: Абзац
+                label: Текст
+                type: string
+
+      - name: education
+        label: Образование и подготовка
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: string
+          - name: intro
+            label: Текст под заголовком
+            type: text
+          - name: placeholder
+            label: Надпись на карточке, пока нет скана
+            type: string
+          - name: documents
+            label: Документы
+            type: object
+            list: true
+            fields:
+              - name: image
+                label: Скан (горизонтальный или вертикальный — карточка подстроится)
+                type: image
+              - name: thumb
+                label: Уменьшенная копия для ленты (необязательно; пусто — берётся скан)
+                type: image
+              - name: caption
+                label: Подпись
+                type: string
+
+      - name: guarantees
+        label: Гарантии
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: string
+          - name: items
+            label: Пункты
+            type: object
+            list: true
+            fields:
+              - name: title
+                label: Название
+                type: string
+              - name: text
+                label: Описание
                 type: text
+
+      - name: format
+        label: Формат работы
+        type: object
+        fields:
+          - name: title
+            label: Заголовок
+            type: string
+          - name: rows
+            label: Строки карточки
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Название
+                type: string
+              - name: value
+                label: Значение
+                type: string
           - name: button
             label: Текст кнопки
             type: string
+          - name: terms
+            label: Условия под карточкой
+            type: text
 
       - name: faq
         label: Частые вопросы
@@ -264,34 +289,8 @@ content:
         label: Финальный призыв
         type: object
         fields:
-          - name: photo
-            label: Предметное фото над блоком (горизонтальное, 16:9; пусто — блока нет)
-            type: image
           - name: title
             label: Заголовок
-            type: text
-          - name: lede
-            label: Подзаголовок
-            type: text
-          - name: meta
-            label: Строка с форматом и ценой
-            type: string
-          - name: button
-            label: Текст кнопки
-            type: string
-          - name: hint
-            label: Подсказка под кнопкой
-            type: text
-
-      - name: reading
-        label: Пока можно просто почитать
-        type: object
-        fields:
-          - name: title
-            label: Заголовок
-            type: text
-          - name: subtitle
-            label: Подзаголовок справа
             type: string
           - name: paragraphs
             label: Абзацы
@@ -301,11 +300,20 @@ content:
               - name: text
                 label: Текст
                 type: text
-          - name: link
-            label: Текст ссылки
+          - name: button
+            label: Текст кнопки
             type: string
-          - name: url
-            label: Ссылка
+          - name: direct_before
+            label: Текст перед ссылкой на Telegram
+            type: string
+          - name: direct_link
+            label: Текст ссылки на Telegram
+            type: string
+          - name: photo
+            label: Предметное фото под блоком (горизонтальное; пусто — блока нет)
+            type: image
+          - name: photo_alt
+            label: Описание фото (для незрячих и поисковиков)
             type: string
 
       - name: footer
@@ -313,18 +321,13 @@ content:
         type: object
         fields:
           - name: name
-            label: Имя
+            label: Первая строка
             type: string
-          - name: lines
-            label: Строки под именем
-            type: object
-            list: true
-            fields:
-              - name: text
-                label: Текст
-                type: string
-          - name: links
-            label: Ссылки под именем
+          - name: name_url
+            label: Ссылка первой строки
+            type: string
+          - name: contacts
+            label: Контакты (пустая ссылка — серый текст без ссылки)
             type: object
             list: true
             fields:
@@ -345,12 +348,6 @@ content:
               - name: url
                 label: Ссылка
                 type: string
-          - name: legal
-            label: Юридический статус и ИНН (пусто — строка скрыта)
-            type: string
-          - name: disclaimer
-            label: Дисклеймер
-            type: text
           - name: copyright
             label: Копирайт
             type: string

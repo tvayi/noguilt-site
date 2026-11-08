@@ -5,3 +5,4 @@ url: https://katherinepsy.com
 exclude:
   - README.md
   - .pages.yml
+  - scans
