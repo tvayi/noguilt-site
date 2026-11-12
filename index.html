@@ -88,7 +88,11 @@
 <!-- ПЕРВЫЙ ЭКРАН -->
 <section class="hero" id="hero">
   {% if c.hero.photo and c.hero.photo != "" %}
-  <div class="hero__photo"><img src="{{ c.hero.photo | relative_url }}" alt="{{ c.brand }}" /></div>
+  {% if c.hero.photo == "/images/hero-portrait.jpg" %}
+  <div class="hero__photo"><img src="{{ c.hero.photo | relative_url }}" srcset="{{ '/images/hero-portrait-960.jpg' | relative_url }} 640w, {{ '/images/hero-portrait-1600.jpg' | relative_url }} 1066w, {{ c.hero.photo | relative_url }} 1707w" sizes="(max-width: 600px) 370px, 93vh" alt="{{ c.brand }}" fetchpriority="high" /></div>
+  {% else %}
+  <div class="hero__photo"><img src="{{ c.hero.photo | relative_url }}" alt="{{ c.brand }}" fetchpriority="high" /></div>
+  {% endif %}
   {% endif %}
   <div class="hero__content">
     <div class="hero__copy">
